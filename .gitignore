@@ -1,1 +1,2 @@
 *.bak
+hw/rtl/axi_regs.vhd
