@@ -17,19 +17,19 @@ package gf_pkg is
     constant GF16_POLY : unsigned(15 downto 0) := "0001000000001011"; -- x^16+x^12+x^3+x+1
     constant GF32_POLY : unsigned(31 downto 0) := "00000000000000000000000010001101"; -- x^32+x^7+x^3+x^2+1
     
-    -- GF(2^n) addition: XOR
+    --  addition:
     function gf_add(a, b : unsigned) return unsigned;
     
-    -- GF(2^n) subtraction: same as addition
+    -- subtraction:
     function gf_sub(a, b : unsigned) return unsigned;
     
-    -- GF(2^8) multiplication using carry-less multiply
+    -- multiplication using carry-less multiply
     function gf8_mult(a, b : unsigned(7 downto 0)) return unsigned;
     
-    -- GF(2^16) multiplication
+    -- multiplication
     function gf16_mult(a, b : unsigned(15 downto 0)) return unsigned;
     
-    -- GF(2^32) multiplication
+    -- multiplication
     function gf32_mult(a, b : unsigned(31 downto 0)) return unsigned;
     
     -- Carry-less multiply (polynomial multiplication)
@@ -52,7 +52,7 @@ package body gf_pkg is
         return a xor b;
     end function;
     
-    -- GF subtraction: same as XOR
+    -- XOR
     function gf_sub(a, b : unsigned) return unsigned is
     begin
         return a xor b;
