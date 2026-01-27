@@ -19,7 +19,7 @@ make cross                    # Cross-compile for ARM
 
 ```bash
 # Test hardware
-sudo ./fpga_demo test-regs
+./fpga_demo test-regs
 
 # Brute force
 ./fpga_demo brute8 0x47 0x05
