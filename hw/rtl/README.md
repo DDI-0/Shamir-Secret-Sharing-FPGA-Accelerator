@@ -54,7 +54,7 @@ make cross                    # Cross-compile for ARM
 ## Results
 
 ```
-Mode 0 (Brute): PASS - all fields
-Mode 1 (Gen):   PASS - all fields
+Mode 0 (Brute): worked with meterics
+Mode 1 (Gen):   worked with meterics(added a timeout on the sw actual calculation is faster)
 Mode 2 (Recon): WIP - timing sync needed
 ```
