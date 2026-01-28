@@ -12,14 +12,14 @@ Hardware-accelerated Shamir's Secret Sharing on DE10-Standard (Cyclone V SoC).
 ## Build
 
 ```bash
-make cross                    # Cross-compile for ARM
+make cross                    # this generates the arm binary files to be sent over ssh to the HPS
 ```
 
 ## Usage
 
 ```bash
 # Test hardware
-sudo ./fpga_demo test-regs
+./fpga_demo test-regs
 
 # Brute force
 ./fpga_demo brute8 0x47 0x05
@@ -54,7 +54,7 @@ sudo ./fpga_demo test-regs
 ## Results
 
 ```
-Mode 0 (Brute): PASS - all fields
-Mode 1 (Gen):   PASS - all fields
+Mode 0 (Brute): worked with meterics
+Mode 1 (Gen):   worked with meterics(added a timeout on the sw actual calculation is faster)
 Mode 2 (Recon): WIP - timing sync needed
 ```

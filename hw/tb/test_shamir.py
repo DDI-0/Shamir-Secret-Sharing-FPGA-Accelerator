@@ -53,7 +53,6 @@ FIELD_GF32  = 2
 
 
 class AvalonMM:
-    """Simple Avalon-MM agent for Shamir accelerator"""
     
     def __init__(self, dut):
         self.dut = dut
@@ -283,7 +282,7 @@ async def test_interrupt(dut):
 
     dut._log.info("=== Test: Interrupt ===")
     
-    # Configure simple share generation with interrupt enabled
+    # share generation with interrupt enabled
     await avmm.write_reg(REG_FIELD, FIELD_GF8)
     await avmm.write_reg(REG_COEFF0, 0x42)
     await avmm.write_reg(REG_COEFF1, 0x05)
