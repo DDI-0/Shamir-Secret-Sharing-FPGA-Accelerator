@@ -19,7 +19,7 @@ MODULE = test_shamir
 SIM = ghdl
 
 # GHDL-specific options(used 93 since lite doenst have 08 support),
-# well the testbench can be written in 08 if u only use ghdl and through quartus I believe
+# well the testbench can be written in 08 if you only use ghdl and not through quartus I believe
 EXTRA_ARGS = --std=93
 GHDL_ARGS = --std=93
 
