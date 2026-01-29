@@ -2,3 +2,5 @@
 hw/rtl/axi_regs.vhd
 hw/rtl/lagrange_3pt.vhd
 *.o
+hw/sim/tb_addr_extract
+*.cf
