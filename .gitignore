@@ -4,3 +4,11 @@ hw/rtl/lagrange_3pt.vhd
 *.o
 hw/sim/tb_addr_extract
 *.cf
+*.ghw
+hw/sim/tb_brute_force
+hw/sim/tb_gf_mult
+hw/sim/tb_top_shamir
+hw/tb/__pycache__/test_shamir.cpython-312.pyc
+hw/tb/results.xml
+hw/tb/tb_top_shamir.vhd
+hw/tb/top_shamir
