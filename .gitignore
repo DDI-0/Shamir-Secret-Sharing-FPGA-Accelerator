@@ -1,3 +1,4 @@
 *.bak
 hw/rtl/axi_regs.vhd
 hw/rtl/lagrange_3pt.vhd
+*.o
