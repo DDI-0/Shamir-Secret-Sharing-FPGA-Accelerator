@@ -47,4 +47,4 @@ static inline uint32_t gf_mask(gf_field_t field) {
   return (field == 32) ? 0xFFFFFFFFU : ((1U << field) - 1);
 }
 
-#endif /* GF_H */
+#endif 
