@@ -23,12 +23,16 @@ make cross                    # this generates the arm binary files to be sent o
 
 # Brute force
 ./fpga_demo brute8 0x47 0x05
+./fpga_demo brute32 0x12345688 0x12345678
+
 
 # Generate share
 ./fpga_demo generate 16 0xDEAD 0x05 3
+./fpga_demo generate 32 0xDEADBEEF 0x12345678 2
 
 # Reconstruct
 ./fpga_demo reconstruct 16 1:0xDEA8 2:0xDEAF
+./fpga_demo reconstruct 32 1:<y1> 2:<y2>
 
 # Run analysis
 ./fpga_analysis
