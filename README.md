@@ -32,7 +32,7 @@ make cross                    # this generates the arm binary files to be sent o
 
 # Reconstruct
 ./fpga_demo reconstruct 16 1:0xDEA8 2:0xDEAF
-./fpga_demo reconstruct 16 1:<y1> 2:<y2>
+./fpga_demo reconstruct 32 1:<y1> 2:<y2>
 
 # Run analysis
 ./fpga_analysis
