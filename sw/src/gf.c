@@ -10,7 +10,7 @@ static uint8_t gf8_exp[512];
 static int gf_initialized = 0;
 
 /**
- * Carry-less multiply (uses 64-bit for intermediate 32x32 result)
+ * Carry-less multiply
  */
 static uint64_t clmul(uint32_t a, uint32_t b) {
   uint64_t result = 0;
@@ -42,7 +42,7 @@ static uint32_t gf_reduce(uint64_t product, gf_field_t field) {
     poly = 0x100B;
     break;
   case GF_32:
-    poly = 0x8D; // Sparse: x^7+x^3+x^2+1
+    poly = 0x8D; //: x^7+x^3+x^2+1
     break;
   default:
     return 0;
