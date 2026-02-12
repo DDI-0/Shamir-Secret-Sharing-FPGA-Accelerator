@@ -1,4 +1,3 @@
--- Single Brute Force Search Pipeline
 -- Tests one candidate secret value against shares
 
 library ieee;
