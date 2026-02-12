@@ -16,12 +16,16 @@ entity brute_array is
         rst         : in  std_logic;
         enable      : in  std_logic;
         field       : in  std_logic_vector(1 downto 0);
+
         -- Base candidate (pipeline i tests base + i)
         base_cand   : in  std_logic_vector(31 downto 0);
+
         -- Share to verify
         share_x     : in  std_logic_vector(31 downto 0);
         share_y     : in  std_logic_vector(31 downto 0);
         coeff_a1    : in  std_logic_vector(31 downto 0);
+        coeff_a2    : in  std_logic_vector(31 downto 0);
+
         -- Results
         any_match   : out std_logic;
         match_idx   : out std_logic_vector(6 downto 0); -- 0-99
@@ -46,16 +50,17 @@ begin
         
         PIPE_I: entity work.brute_pipe
             port map (
-                clk => clk,
-                rst => rst,
-                enable => enable,
-                field => field,
+                clk       => clk,
+                rst       => rst,
+                enable    => enable,
+                field     => field,
                 candidate => candidates(i),
-                share_x => share_x,
-                share_y => share_y,
-                coeff_a1 => coeff_a1,
-                match => pipe_match(i),
-                valid => pipe_valid(i)
+                share_x   => share_x,
+                share_y   => share_y,
+                coeff_a1  => coeff_a1,
+                coeff_a2  => coeff_a2,
+                match     => pipe_match(i),
+                valid     => pipe_valid(i)
             );
     end generate GEN_PIPES;
     
@@ -67,10 +72,9 @@ begin
         if rst = '1' then
             any_match <= '0';
             match_idx <= (others => '0');
-            valid <= '0';
+            valid     <= '0';
         elsif rising_edge(clk) then
             valid <= pipe_valid(0);
-            
             found_match := '0';
             found_idx := 0;
             
