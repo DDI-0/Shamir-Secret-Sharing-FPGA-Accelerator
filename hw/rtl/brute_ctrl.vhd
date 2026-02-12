@@ -13,10 +13,11 @@ entity brute_ctrl is
         rst         : in  std_logic;
         start       : in  std_logic;
         abort       : in  std_logic;
-        field       : in  std_logic_vector(1 downto 0); -- 00=GF8, 01=GF16, 10=GF32
+        field       : in  std_logic_vector(1 downto 0);
         share_x     : in  std_logic_vector(31 downto 0);
         share_y     : in  std_logic_vector(31 downto 0);
         coeff_a1    : in  std_logic_vector(31 downto 0);
+        coeff_a2    : in  std_logic_vector(31 downto 0);
         base_cand   : out std_logic_vector(31 downto 0);
         pipe_enable : out std_logic;
         any_match   : in  std_logic;
@@ -79,6 +80,8 @@ begin
                     cycle_cnt <= cycle_cnt + 1;
                     
                     if abort = '1' then
+                        state <= DONE;
+                    elsif counter > max_value then
                         state <= DONE;
                     else
                         -- Start batch
