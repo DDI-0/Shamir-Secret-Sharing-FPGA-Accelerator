@@ -10,7 +10,7 @@ use work.gf_pkg.all;
 
 entity poly_eval is
     generic (
-        MAX_DEGREE : natural := 15  -- Maximum polynomial degree
+        MAX_DEGREE : natural := 7  -- Maximum polynomial degree (8 coefficients)
     );
     port (
         clk     : in  std_logic;
@@ -20,7 +20,7 @@ entity poly_eval is
         x       : in  std_logic_vector(31 downto 0);
         degree  : in  std_logic_vector(3 downto 0); -- 0 to 15
         -- Coefficients: coeffs[0] is constant term
-        coeffs  : in  std_logic_vector(32*16-1 downto 0); -- 16 x 32-bit
+        coeffs  : in  std_logic_vector(32*8-1 downto 0); -- 8 x 32-bit (a0..a7)
         result  : out std_logic_vector(31 downto 0);
         done    : out std_logic
     );
