@@ -23,24 +23,37 @@ entity avalon_regs is
         cfg_field   : out std_logic_vector(1 downto 0);
         
         -- Brute force specific (also used as share0 for recon)
-        cfg_share_x : out std_logic_vector(31 downto 0);
-        cfg_share_y : out std_logic_vector(31 downto 0);
-        cfg_coeff   : out std_logic_vector(31 downto 0);  -- a1 for brute, a0 (secret) for gen
+        cfg_share_x  : out std_logic_vector(31 downto 0);
+        cfg_share_y  : out std_logic_vector(31 downto 0);
+        cfg_coeff_a1 : out std_logic_vector(31 downto 0);  -- a1 for brute, a0 for gen
+        cfg_coeff_a2 : out std_logic_vector(31 downto 0);  -- a2 for brute, a1 for gen
         
         -- Share generation: coefficients and eval point
         cfg_coeff1  : out std_logic_vector(31 downto 0);
         cfg_coeff2  : out std_logic_vector(31 downto 0);
         cfg_coeff3  : out std_logic_vector(31 downto 0);
+        cfg_coeff4  : out std_logic_vector(31 downto 0);
+        cfg_coeff5  : out std_logic_vector(31 downto 0);
+        cfg_coeff6  : out std_logic_vector(31 downto 0);
+        cfg_coeff7  : out std_logic_vector(31 downto 0);
         cfg_eval_x  : out std_logic_vector(31 downto 0);
         cfg_degree  : out std_logic_vector(3 downto 0);
         
-        -- Reconstruction: additional shares (up to 4 total)
+        -- Reconstruction: additional shares (up to 8 total)
         cfg_share_x1 : out std_logic_vector(31 downto 0);
         cfg_share_y1 : out std_logic_vector(31 downto 0);
         cfg_share_x2 : out std_logic_vector(31 downto 0);
         cfg_share_y2 : out std_logic_vector(31 downto 0);
         cfg_share_x3 : out std_logic_vector(31 downto 0);
         cfg_share_y3 : out std_logic_vector(31 downto 0);
+        cfg_share_x4 : out std_logic_vector(31 downto 0);
+        cfg_share_y4 : out std_logic_vector(31 downto 0);
+        cfg_share_x5 : out std_logic_vector(31 downto 0);
+        cfg_share_y5 : out std_logic_vector(31 downto 0);
+        cfg_share_x6 : out std_logic_vector(31 downto 0);
+        cfg_share_y6 : out std_logic_vector(31 downto 0);
+        cfg_share_x7 : out std_logic_vector(31 downto 0);
+        cfg_share_y7 : out std_logic_vector(31 downto 0);
         cfg_k        : out std_logic_vector(3 downto 0);
         
         stat_busy   : in  std_logic;
@@ -74,6 +87,20 @@ architecture rtl of avalon_regs is
     constant ADDR_COEFF3    : std_logic_vector(5 downto 0) := "010000"; -- 0x40
     constant ADDR_K_DEGREE  : std_logic_vector(5 downto 0) := "010001"; -- 0x44 (k for recon, degree for gen)
     constant ADDR_EVAL_X    : std_logic_vector(5 downto 0) := "010010"; -- 0x48
+    -- Shares 4-7 for full 8-share reconstruction
+    constant ADDR_SHARE_X4  : std_logic_vector(5 downto 0) := "010011"; -- 0x4C
+    constant ADDR_SHARE_Y4  : std_logic_vector(5 downto 0) := "010100"; -- 0x50
+    constant ADDR_SHARE_X5  : std_logic_vector(5 downto 0) := "010101"; -- 0x54
+    constant ADDR_SHARE_Y5  : std_logic_vector(5 downto 0) := "010110"; -- 0x58
+    constant ADDR_SHARE_X6  : std_logic_vector(5 downto 0) := "010111"; -- 0x5C
+    constant ADDR_SHARE_Y6  : std_logic_vector(5 downto 0) := "011000"; -- 0x60
+    constant ADDR_SHARE_X7  : std_logic_vector(5 downto 0) := "011001"; -- 0x64
+    constant ADDR_SHARE_Y7  : std_logic_vector(5 downto 0) := "011010"; -- 0x68
+    -- Additional coefficients for poly_eval (up to 8 total)
+    constant ADDR_COEFF4    : std_logic_vector(5 downto 0) := "011011"; -- 0x6C
+    constant ADDR_COEFF5    : std_logic_vector(5 downto 0) := "011100"; -- 0x70
+    constant ADDR_COEFF6    : std_logic_vector(5 downto 0) := "011101"; -- 0x74
+    constant ADDR_COEFF7    : std_logic_vector(5 downto 0) := "011110"; -- 0x78
 
     -- Control register bits
     constant CTRL_START_BIT    : natural := 0;
@@ -102,9 +129,21 @@ architecture rtl of avalon_regs is
     signal share_y2_reg : std_logic_vector(31 downto 0) := (others => '0');
     signal share_x3_reg : std_logic_vector(31 downto 0) := (others => '0');
     signal share_y3_reg : std_logic_vector(31 downto 0) := (others => '0');
+    signal share_x4_reg : std_logic_vector(31 downto 0) := (others => '0');
+    signal share_y4_reg : std_logic_vector(31 downto 0) := (others => '0');
+    signal share_x5_reg : std_logic_vector(31 downto 0) := (others => '0');
+    signal share_y5_reg : std_logic_vector(31 downto 0) := (others => '0');
+    signal share_x6_reg : std_logic_vector(31 downto 0) := (others => '0');
+    signal share_y6_reg : std_logic_vector(31 downto 0) := (others => '0');
+    signal share_x7_reg : std_logic_vector(31 downto 0) := (others => '0');
+    signal share_y7_reg : std_logic_vector(31 downto 0) := (others => '0');
     signal coeff1_reg   : std_logic_vector(31 downto 0) := (others => '0');
     signal coeff2_reg   : std_logic_vector(31 downto 0) := (others => '0');
     signal coeff3_reg   : std_logic_vector(31 downto 0) := (others => '0');
+    signal coeff4_reg   : std_logic_vector(31 downto 0) := (others => '0');
+    signal coeff5_reg   : std_logic_vector(31 downto 0) := (others => '0');
+    signal coeff6_reg   : std_logic_vector(31 downto 0) := (others => '0');
+    signal coeff7_reg   : std_logic_vector(31 downto 0) := (others => '0');
     signal k_degree_reg : std_logic_vector(3 downto 0) := "0010";  -- default k=2
     signal eval_x_reg   : std_logic_vector(31 downto 0) := (others => '0');
     signal int_enable   : std_logic := '0';
@@ -136,9 +175,21 @@ begin
                 share_y2_reg <= (others => '0');
                 share_x3_reg <= (others => '0');
                 share_y3_reg <= (others => '0');
+                share_x4_reg <= (others => '0');
+                share_y4_reg <= (others => '0');
+                share_x5_reg <= (others => '0');
+                share_y5_reg <= (others => '0');
+                share_x6_reg <= (others => '0');
+                share_y6_reg <= (others => '0');
+                share_x7_reg <= (others => '0');
+                share_y7_reg <= (others => '0');
                 coeff1_reg <= (others => '0');
                 coeff2_reg <= (others => '0');
                 coeff3_reg <= (others => '0');
+                coeff4_reg <= (others => '0');
+                coeff5_reg <= (others => '0');
+                coeff6_reg <= (others => '0');
+                coeff7_reg <= (others => '0');
                 k_degree_reg <= "0010";
                 eval_x_reg <= (others => '0');
                 int_enable <= '0';
@@ -203,6 +254,32 @@ begin
                             k_degree_reg <= writedata(3 downto 0);
                         when ADDR_EVAL_X =>
                             eval_x_reg <= writedata;
+                        
+                        when ADDR_SHARE_X4 =>
+                            share_x4_reg <= writedata;
+                        when ADDR_SHARE_Y4 =>
+                            share_y4_reg <= writedata;
+                        when ADDR_SHARE_X5 =>
+                            share_x5_reg <= writedata;
+                        when ADDR_SHARE_Y5 =>
+                            share_y5_reg <= writedata;
+                        when ADDR_SHARE_X6 =>
+                            share_x6_reg <= writedata;
+                        when ADDR_SHARE_Y6 =>
+                            share_y6_reg <= writedata;
+                        when ADDR_SHARE_X7 =>
+                            share_x7_reg <= writedata;
+                        when ADDR_SHARE_Y7 =>
+                            share_y7_reg <= writedata;
+                        
+                        when ADDR_COEFF4 =>
+                            coeff4_reg <= writedata;
+                        when ADDR_COEFF5 =>
+                            coeff5_reg <= writedata;
+                        when ADDR_COEFF6 =>
+                            coeff6_reg <= writedata;
+                        when ADDR_COEFF7 =>
+                            coeff7_reg <= writedata;
                             
                         when others =>
                             null;
@@ -263,6 +340,32 @@ begin
                             readdata(3 downto 0) <= k_degree_reg;
                         when ADDR_EVAL_X =>
                             readdata <= eval_x_reg;
+                        
+                        when ADDR_SHARE_X4 =>
+                            readdata <= share_x4_reg;
+                        when ADDR_SHARE_Y4 =>
+                            readdata <= share_y4_reg;
+                        when ADDR_SHARE_X5 =>
+                            readdata <= share_x5_reg;
+                        when ADDR_SHARE_Y5 =>
+                            readdata <= share_y5_reg;
+                        when ADDR_SHARE_X6 =>
+                            readdata <= share_x6_reg;
+                        when ADDR_SHARE_Y6 =>
+                            readdata <= share_y6_reg;
+                        when ADDR_SHARE_X7 =>
+                            readdata <= share_x7_reg;
+                        when ADDR_SHARE_Y7 =>
+                            readdata <= share_y7_reg;
+                        
+                        when ADDR_COEFF4 =>
+                            readdata <= coeff4_reg;
+                        when ADDR_COEFF5 =>
+                            readdata <= coeff5_reg;
+                        when ADDR_COEFF6 =>
+                            readdata <= coeff6_reg;
+                        when ADDR_COEFF7 =>
+                            readdata <= coeff7_reg;
                             
                         when others =>
                             readdata <= x"DEADBEEF";
@@ -279,16 +382,29 @@ begin
     cfg_field    <= field_reg;
     cfg_share_x  <= share_x0_reg;
     cfg_share_y  <= share_y0_reg;
-    cfg_coeff    <= coeff0_reg;
+    cfg_coeff_a1 <= coeff0_reg;
+    cfg_coeff_a2 <= coeff1_reg;
     cfg_share_x1 <= share_x1_reg;
     cfg_share_y1 <= share_y1_reg;
     cfg_share_x2 <= share_x2_reg;
     cfg_share_y2 <= share_y2_reg;
     cfg_share_x3 <= share_x3_reg;
     cfg_share_y3 <= share_y3_reg;
+    cfg_share_x4 <= share_x4_reg;
+    cfg_share_y4 <= share_y4_reg;
+    cfg_share_x5 <= share_x5_reg;
+    cfg_share_y5 <= share_y5_reg;
+    cfg_share_x6 <= share_x6_reg;
+    cfg_share_y6 <= share_y6_reg;
+    cfg_share_x7 <= share_x7_reg;
+    cfg_share_y7 <= share_y7_reg;
     cfg_coeff1   <= coeff1_reg;
     cfg_coeff2   <= coeff2_reg;
     cfg_coeff3   <= coeff3_reg;
+    cfg_coeff4   <= coeff4_reg;
+    cfg_coeff5   <= coeff5_reg;
+    cfg_coeff6   <= coeff6_reg;
+    cfg_coeff7   <= coeff7_reg;
     cfg_k        <= k_degree_reg;
     cfg_degree   <= k_degree_reg;
     cfg_eval_x   <= eval_x_reg;
