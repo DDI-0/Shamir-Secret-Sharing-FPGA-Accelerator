@@ -16,7 +16,7 @@ use work.gf_pkg.all;
 
 entity shamir_recon is
     generic (
-        MAX_K : natural := 8  -- Maximum threshold (number of shares)
+        MAX_K : natural := 8  -- Maximum number of shares
     );
     port (
         clk     : in  std_logic;
