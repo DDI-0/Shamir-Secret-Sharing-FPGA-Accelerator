@@ -1,6 +1,6 @@
 -- Shamir Secret Reconstruction (k shares)
 -- Uses Lagrange interpolation at x=0
--- PIPELINED: one GF operation per clock cycle for synthesis-friendly design
+-- PIPELINED: one GF operation per clock cycle
 --   - Lagrange numerator/denominator: 1 cycle per j
 --   - GF inverse (Fermat): 1 cycle per exponent bit (32 cycles)
 --   - Final multiply + accumulate: 2 cycles
