@@ -375,7 +375,6 @@ begin
         end if;
     end process;
 
-    -- Output assignments
     ctrl_start   <= start_pulse;
     ctrl_abort   <= abort_reg;
     cfg_mode     <= mode_reg;
