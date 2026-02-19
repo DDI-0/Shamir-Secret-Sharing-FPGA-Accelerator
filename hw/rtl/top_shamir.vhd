@@ -173,7 +173,6 @@ begin
             cycles    => bf_cycles
         );
     
-    -- Pack coefficients for poly_eval (up to 8 coefficients)
     -- Mapping: COEFF0 -> a0, COEFF1 -> a1, COEFF2 -> a2, COEFF3 -> a3, COEFF4 -> a4
     -- Note: cfg_coeff_a1 = coeff0_reg, cfg_coeff_a2 = coeff1_reg = cfg_coeff1 (shared)
     -- For gen mode we use: coeff0=a0, coeff1=a1, coeff2=a2, coeff3=a3
