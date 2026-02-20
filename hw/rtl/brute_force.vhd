@@ -6,7 +6,7 @@ use ieee.numeric_std.all;
 
 entity brute_force is
     generic (
-        N_PIPES : natural := 100
+        N_PIPES : natural := 16
     );
     port (
         clk         : in  std_logic;
@@ -15,10 +15,12 @@ entity brute_force is
         start       : in  std_logic;
         abort       : in  std_logic;
         field       : in  std_logic_vector(1 downto 0);
+
         -- Share to crack (only need one share for k=2)
         share_x     : in  std_logic_vector(31 downto 0);
         share_y     : in  std_logic_vector(31 downto 0);
         coeff_a1    : in  std_logic_vector(31 downto 0);
+        coeff_a2    : in  std_logic_vector(31 downto 0);
         -- Status
         busy        : out std_logic;
         found       : out std_logic;
@@ -49,6 +51,7 @@ begin
             share_x => share_x,
             share_y => share_y,
             coeff_a1 => coeff_a1,
+            coeff_a2 => coeff_a2,
             base_cand => base_cand,
             pipe_enable => pipe_enable,
             any_match => any_match,
@@ -73,6 +76,7 @@ begin
             share_x => share_x,
             share_y => share_y,
             coeff_a1 => coeff_a1,
+            coeff_a2 => coeff_a2,
             any_match => any_match,
             match_idx => match_idx,
             valid => pipe_valid

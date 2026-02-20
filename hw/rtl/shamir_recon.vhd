@@ -1,11 +1,4 @@
 -- Shamir Secret Reconstruction (k shares)
--- Uses Lagrange interpolation at x=0
--- PIPELINED: one GF operation per clock cycle
---   - Lagrange numerator/denominator: 1 cycle per j
---   - GF inverse (Fermat): 1 cycle per exponent bit (32 cycles)
---   - Final multiply + accumulate: 2 cycles
--- Total per share: ~(k + 32 + 2) cycles
--- Total for k shares: ~k * (k + 34)
 
 library ieee;
 use ieee.std_logic_1164.all;
@@ -16,7 +9,7 @@ use work.gf_pkg.all;
 
 entity shamir_recon is
     generic (
-        MAX_K : natural := 8  -- Maximum number of shares
+        MAX_K : natural := 8  -- Maximum threshold (number of shares)
     );
     port (
         clk     : in  std_logic;
@@ -24,7 +17,7 @@ entity shamir_recon is
         start   : in  std_logic;
         field   : in  std_logic_vector(1 downto 0);
         k       : in  std_logic_vector(3 downto 0); -- Number of shares to use
-        -- Shares as flat buses: MAX_K x 32-bit packed
+        -- Shares as flat buses: 
         share_xs : in std_logic_vector(32*MAX_K-1 downto 0);
         share_ys : in std_logic_vector(32*MAX_K-1 downto 0);
         secret  : out std_logic_vector(31 downto 0);
@@ -34,7 +27,7 @@ end entity shamir_recon;
 
 architecture rtl of shamir_recon is
 
-    -- FSM states (pipelined)
+    
     type state_t is (
         IDLE,
         LAGRANGE_INIT,    -- Initialize num=1, den=1, j=0 for share i
@@ -48,7 +41,6 @@ architecture rtl of shamir_recon is
     );
     signal state : state_t;
 
-    -- Internal array types for convenient indexing
     type share_array_t is array (0 to MAX_K-1) of unsigned(31 downto 0);
     signal xs, ys : share_array_t;
 
@@ -73,7 +65,7 @@ architecture rtl of shamir_recon is
     -- Final multiply intermediate
     signal coeff_reg  : unsigned(31 downto 0);
 
-    -- Single GF multiplier (shared, only 1 multiply per cycle)
+    -- Single GF multiplier(shared)
     function do_mult(a, b : unsigned(31 downto 0); f : std_logic_vector(1 downto 0))
         return unsigned is
     begin

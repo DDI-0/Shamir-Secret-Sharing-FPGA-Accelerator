@@ -1,6 +1,4 @@
 -- gf_pkg.vhd - GF(2^n) Arithmetic Package
--- VHDL-93 compatible version
--- All GF operators defined here, called by entities
 
 library ieee;
 use ieee.std_logic_1164.all;
@@ -11,25 +9,24 @@ package gf_pkg is
     -- Field size type
     type gf_field_t is (GF_8, GF_16, GF_32);
     
-    -- Irreducible polynomials (low bits, excluding x^n term)
-    -- Sparse polys chosen for minimal XOR gates in FPGA reduction
+    -- Irreducible polynomials
     constant GF8_POLY  : unsigned(7 downto 0)  := "00011011";  -- x^8+x^4+x^3+x+1
     constant GF16_POLY : unsigned(15 downto 0) := "0001000000001011"; -- x^16+x^12+x^3+x+1
     constant GF32_POLY : unsigned(31 downto 0) := "00000000000000000000000010001101"; -- x^32+x^7+x^3+x^2+1
     
-    --  addition:
+    -- GF(2^n) addition: XOR
     function gf_add(a, b : unsigned) return unsigned;
     
-    -- subtraction:
+    -- GF(2^n) subtraction: same as addition
     function gf_sub(a, b : unsigned) return unsigned;
     
-    -- multiplication using carry-less multiply
+    -- GF(2^8) multiplication using carry-less multiply
     function gf8_mult(a, b : unsigned(7 downto 0)) return unsigned;
     
-    -- multiplication
+    -- GF(2^16) multiplication
     function gf16_mult(a, b : unsigned(15 downto 0)) return unsigned;
     
-    -- multiplication
+    -- GF(2^32) multiplication
     function gf32_mult(a, b : unsigned(31 downto 0)) return unsigned;
     
     -- Carry-less multiply (polynomial multiplication)
@@ -52,7 +49,7 @@ package body gf_pkg is
         return a xor b;
     end function;
     
-    -- XOR
+    -- GF subtraction: same as XOR
     function gf_sub(a, b : unsigned) return unsigned is
     begin
         return a xor b;

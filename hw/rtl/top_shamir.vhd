@@ -7,7 +7,7 @@ use ieee.numeric_std.all;
 
 entity top_shamir is
     generic (
-        N_PIPES : natural := 100
+        N_PIPES : natural := 16
     );
     port (
         clk       : in  std_logic;
@@ -98,7 +98,7 @@ begin
 
     reset <= not reset_n;
 
-    -- Avalon Register Interface
+    -- Avalon MM 
     REGS: entity work.avalon_regs
         port map (
             clk          => clk,
@@ -148,12 +148,12 @@ begin
             result_cycles => result_cycles
         );
     
-    -- Mode-based start routing
+    -- Mode routing
     bf_start <= ctrl_start when cfg_mode = "00" else '0';
     pe_start <= ctrl_start when cfg_mode = "01" else '0';
     sr_start <= ctrl_start when cfg_mode = "10" else '0';
     
-    -- Brute Force Engine (existing)
+    -- Brute Force Engine
     BRUTE: entity work.brute_force
         generic map (N_PIPES => N_PIPES)
         port map (
@@ -173,9 +173,6 @@ begin
             cycles    => bf_cycles
         );
     
-    -- Mapping: COEFF0 -> a0, COEFF1 -> a1, COEFF2 -> a2, COEFF3 -> a3, COEFF4 -> a4
-    -- Note: cfg_coeff_a1 = coeff0_reg, cfg_coeff_a2 = coeff1_reg = cfg_coeff1 (shared)
-    -- For gen mode we use: coeff0=a0, coeff1=a1, coeff2=a2, coeff3=a3
     pe_coeffs(31 downto 0)    <= cfg_coeff_a1;    -- a0 (coeff0_reg / ADDR_COEFF0)
     pe_coeffs(63 downto 32)   <= cfg_coeff1;      -- a1 (coeff1_reg / ADDR_COEFF1)
     pe_coeffs(95 downto 64)   <= cfg_coeff2;      -- a2 (coeff2_reg / ADDR_COEFF2)
@@ -185,7 +182,7 @@ begin
     pe_coeffs(223 downto 192) <= cfg_coeff6;      -- a6 (coeff6_reg / ADDR_COEFF6)
     pe_coeffs(255 downto 224) <= cfg_coeff7;      -- a7 (coeff7_reg / ADDR_COEFF7)
     
-    -- Polynomial Evaluation (Share Generation)
+    -- Share Generation
     POLYEVAL: entity work.poly_eval
         generic map (MAX_DEGREE => 7)
         port map (

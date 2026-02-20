@@ -1,5 +1,4 @@
 -- poly_eval.vhd - Polynomial Evaluation using Horner's Method
--- Uses gf_pkg operators
 
 library ieee;
 use ieee.std_logic_1164.all;

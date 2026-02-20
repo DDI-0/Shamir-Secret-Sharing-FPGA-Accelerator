@@ -39,6 +39,7 @@ architecture rtl of brute_pipe is
     type state_t is (IDLE, S1, S2, S3, S4);
     signal state : state_t;
 
+    -- Registered intermediates
     signal r_a0       : unsigned(31 downto 0);
     signal r_a2       : unsigned(31 downto 0);
     signal r_x        : unsigned(31 downto 0);
@@ -94,7 +95,7 @@ begin
                         r_x     <= unsigned(share_x);
                         r_y     <= unsigned(share_y);
                         r_field <= field;
-                        -- S1: compute term1 = a1 * x (Mealy: output depends on input)
+                        -- S1: compute term1 = a1 * x)
                         r_term1 <= do_mult(unsigned(coeff_a1), unsigned(share_x), field);
                         state   <= S2;
                     end if;

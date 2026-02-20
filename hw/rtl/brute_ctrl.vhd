@@ -6,7 +6,7 @@ use ieee.numeric_std.all;
 
 entity brute_ctrl is
     generic (
-        N_PIPES : natural := 100
+        N_PIPES : natural := 16
     );
     port (
         clk         : in  std_logic;

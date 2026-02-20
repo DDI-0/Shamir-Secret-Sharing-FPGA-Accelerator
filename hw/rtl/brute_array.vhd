@@ -9,7 +9,7 @@ use ieee.numeric_std.all;
 
 entity brute_array is
     generic (
-        N_PIPES : natural := 100  -- Number of parallel pipelines
+        N_PIPES : natural := 16  -- Number of parallel pipelines
     );
     port (
         clk         : in  std_logic;
