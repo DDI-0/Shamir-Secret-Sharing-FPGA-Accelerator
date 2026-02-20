@@ -277,7 +277,6 @@ static void do_demo(fpga_handle_t *h) {
 
 int main(void) {
   printf("  Shamir FPGA Accelerator\n");
-  printf("  DE10-Standard SoC\n");
 
   fpga_handle_t *h = fpga_open();
   if (!h) {
