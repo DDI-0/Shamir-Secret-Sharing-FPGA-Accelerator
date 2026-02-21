@@ -22,7 +22,7 @@ entity avalon_regs is
         ctrl_abort  : out std_logic;
         cfg_field   : out std_logic_vector(1 downto 0);
         
-        -- Brute force specific (also used as share0 for recon)
+        -- Brute force specific (also used as share0 for reconstruction)
         cfg_share_x  : out std_logic_vector(31 downto 0);
         cfg_share_y  : out std_logic_vector(31 downto 0);
         cfg_coeff_a1 : out std_logic_vector(31 downto 0);  -- a1 for brute, a0 for gen
@@ -39,7 +39,7 @@ entity avalon_regs is
         cfg_eval_x  : out std_logic_vector(31 downto 0);
         cfg_degree  : out std_logic_vector(3 downto 0);
         
-        -- Reconstruction: additional shares (up to 8 total)
+        -- Reconstruction: (up to 8 total)
         cfg_share_x1 : out std_logic_vector(31 downto 0);
         cfg_share_y1 : out std_logic_vector(31 downto 0);
         cfg_share_x2 : out std_logic_vector(31 downto 0);
@@ -75,7 +75,6 @@ architecture rtl of avalon_regs is
     constant ADDR_COEFF0    : std_logic_vector(5 downto 0) := "000101"; -- 0x14 (a1 brute / a0 gen)
     constant ADDR_RESULT    : std_logic_vector(5 downto 0) := "000110"; -- 0x18
     constant ADDR_CYCLES    : std_logic_vector(5 downto 0) := "000111"; -- 0x1C
-    -- Extended registers
     constant ADDR_SHARE_X1  : std_logic_vector(5 downto 0) := "001000"; -- 0x20
     constant ADDR_SHARE_Y1  : std_logic_vector(5 downto 0) := "001001"; -- 0x24
     constant ADDR_SHARE_X2  : std_logic_vector(5 downto 0) := "001010"; -- 0x28
@@ -375,7 +374,6 @@ begin
         end if;
     end process;
 
-    -- Output assignments
     ctrl_start   <= start_pulse;
     ctrl_abort   <= abort_reg;
     cfg_mode     <= mode_reg;
