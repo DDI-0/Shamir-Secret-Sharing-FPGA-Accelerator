@@ -18,7 +18,7 @@ entity poly_eval is
         field   : in  std_logic_vector(1 downto 0); -- 00=GF8, 01=GF16, 10=GF32
         x       : in  std_logic_vector(31 downto 0);
         degree  : in  std_logic_vector(3 downto 0); -- 0 to 15
-        -- Coefficients: coeffs[0] is constant term
+        -- Coefficients: coeffs[0] is constant term(a0 or C)
         coeffs  : in  std_logic_vector(32*8-1 downto 0); -- 8 x 32-bit (a0..a7)
         result  : out std_logic_vector(31 downto 0);
         done    : out std_logic
