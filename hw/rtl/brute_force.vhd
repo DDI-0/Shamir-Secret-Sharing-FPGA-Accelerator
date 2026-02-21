@@ -16,7 +16,7 @@ entity brute_force is
         abort       : in  std_logic;
         field       : in  std_logic_vector(1 downto 0);
 
-        -- Share to crack (only need one share for k=2)
+        -- Share to crack
         share_x     : in  std_logic_vector(31 downto 0);
         share_y     : in  std_logic_vector(31 downto 0);
         coeff_a1    : in  std_logic_vector(31 downto 0);
