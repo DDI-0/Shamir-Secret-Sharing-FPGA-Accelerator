@@ -81,7 +81,6 @@ begin
             r_term2 <= (others => '0');
 
         elsif rising_edge(clk) then
-            -- Mealy defaults
             valid <= '0';
             match <= '0';
 
@@ -126,5 +125,6 @@ begin
             end case;
         end if;
     end process fsm;
+
 
 end architecture rtl;
