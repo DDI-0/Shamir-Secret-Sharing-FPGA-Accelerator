@@ -13,7 +13,7 @@ entity top_shamir is
         clk       : in  std_logic;
         reset_n   : in  std_logic;
         
-        -- Avalon-MM Slave Interface (6-bit address for extended registers)
+        -- Avalon-MM Slave Interface
         avs_read      : in  std_logic;
         avs_write     : in  std_logic;
         avs_address   : in  std_logic_vector(5 downto 0);
@@ -292,3 +292,4 @@ begin
     end process;
 
 end architecture rtl;
+
