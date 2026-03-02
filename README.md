@@ -52,15 +52,6 @@ scp build/shamir root@<board-ip>:/root/
 ./shamir
 ```
 
-## FPGA Resource Usage
-
-| Resource | Used | Available | % |
-|----------|------|-----------|---|
-| ALMs | 13,209 | 41,910 | 32% |
-| Registers | 6,165 | — | — |
-| Block RAM | 0 | 5,662,720 bits | 0% |
-| DSP Blocks | 0 | 112 | 0% |
-
 ## Results
 
 ### Reconstruction (Mode 2)
