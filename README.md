@@ -58,7 +58,7 @@ scp build/shamir root@<board-ip>:/root/
 
 All tests pass — reconstructed secret matches original across varying thresholds.
 
-| # | Secret | Field | k | n | Recovered | Match | Time (μs) |
+| # | Secret | Field | k | n | Recovered | Time (μs | Time (μs) |
 |---|--------|-------|---|---|-----------|-------|-----------|
 | 1 | `0x04C11DB7` | GF(2³²) | 3 | 5 | `0x04C11DB7` | 8.6 |
 | 2 | `0x04C11DB7` | GF(2³²) | 5 | 13 | `0x04C11DB7` | 12.6 |
