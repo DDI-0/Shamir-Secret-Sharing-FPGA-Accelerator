@@ -14,4 +14,6 @@ Hardware-accelerated Shamir's Secret Sharing on DE10-Standard (Cyclone V SoC).
 ```bash
 make cross                    # this generates the arm binary files to be sent over ssh to the HPS
 ```
+<img width="942" height="1016" alt="image" src="https://github.com/user-attachments/assets/a7da537c-92fc-425b-ab93-c9d5dea0ec89" />
+
 
