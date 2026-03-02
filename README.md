@@ -97,6 +97,10 @@ All tests pass — reconstructed secret matches original across varying threshol
 ├── SoC_Shamir.qsys     # Platform Designer system
 └── DE10_Standard.qsf    # Quartus project
 ```
+
+## References
+https://en.wikipedia.org/wiki/Finite_field
+https://en.wikipedia.org/wiki/Shamir%27s_secret_sharing
 <img width="942" height="1016" alt="image" src="https://github.com/user-attachments/assets/a7da537c-92fc-425b-ab93-c9d5dea0ec89" />
 
 
